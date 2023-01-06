@@ -1,22 +1,22 @@
 import { Response, Request, NextFunction  } from 'express';
 import { ObjectId } from 'mongodb';
 import { ParamsWithId } from '../../interfaces/ParamsWithId';
-import { User, Users, UserWithId } from './users.model';
+import { Ticklist, Ticklists, TicklistWithId } from './ticklists.model';
 
 
 
-export async function findAllUsers(req: Request, res: Response<UserWithId[]>, next: NextFunction) {
+export async function findAllTicks(req: Request, res: Response<TicklistWithId[]>, next: NextFunction) {
   try {
-    const users = await Users.find().toArray();
-    res.json(users);
+    const ticks = await Ticklists.find().toArray();
+    res.json(ticks);
   } catch (error) {
     next(error);
   }
 }
 
-export async function findOneUser(req: Request<ParamsWithId, UserWithId>, res: Response<UserWithId>, next: NextFunction) {
+export async function findOneTick(req: Request<ParamsWithId, TicklistWithId>, res: Response<TicklistWithId>, next: NextFunction) {
   try {
-    const result = await Users.findOne({
+    const result = await Ticklists.findOne({
       _id: new ObjectId(req.params.id),
     });
     if (!result) {
@@ -29,9 +29,9 @@ export async function findOneUser(req: Request<ParamsWithId, UserWithId>, res: R
   }
 }
 
-export async function CreateUser(req: Request<{}, UserWithId, User>, res: Response<UserWithId>, next: NextFunction) {
+export async function CreateTick(req: Request<{}, TicklistWithId, Ticklist>, res: Response<TicklistWithId>, next: NextFunction) {
   try {
-    const insertResult = await Users.insertOne(req.body);
+    const insertResult = await Ticklists.insertOne(req.body);
     if (!insertResult.acknowledged) throw new Error('Error inserting climb');
     res.status(201);
     res.json({
@@ -43,9 +43,9 @@ export async function CreateUser(req: Request<{}, UserWithId, User>, res: Respon
   }
 }
 
-export async function UpdateUser(req: Request<ParamsWithId, UserWithId, User>, res: Response<UserWithId>, next: NextFunction) {
+export async function UpdateTick(req: Request<ParamsWithId, TicklistWithId, Ticklist>, res: Response<TicklistWithId>, next: NextFunction) {
   try {
-    const updateResult = await Users.findOneAndUpdate({
+    const updateResult = await Ticklists.findOneAndUpdate({
       _id: new ObjectId(req.params.id),
     }, {
       $set: req.body,
@@ -63,9 +63,9 @@ export async function UpdateUser(req: Request<ParamsWithId, UserWithId, User>, r
   }
 }
 
-export async function DeleteUser(req: Request<ParamsWithId, UserWithId>, res: Response<UserWithId>, next: NextFunction) {
+export async function DeleteTick(req: Request<ParamsWithId, TicklistWithId>, res: Response<TicklistWithId>, next: NextFunction) {
   try {
-    const deletedResult = await Users.findOneAndDelete({
+    const deletedResult = await Ticklists.findOneAndDelete({
       _id: new ObjectId(req.params.id),
     });
     if (!deletedResult.value) {

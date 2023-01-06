@@ -1,41 +1,41 @@
 import {  Router } from 'express';
-import * as UsersHandlers from './users.handlers';
-import { User } from './users.model';
+import * as TicklistHandlers from './ticklists.handlers';
+import { Ticklist } from './ticklists.model';
 
 import { validateRequest } from '../../middlewares'; 
 import { ParamsWithId } from '../../interfaces/ParamsWithId';
 
 const router = Router();
 
-router.get('/', UsersHandlers.findAllUsers);
+router.get('/', TicklistHandlers.findAllTicks);
 
 router.get(
   '/:id',
   validateRequest({
     params: ParamsWithId,
   }),
-  UsersHandlers.findOneUser);
+  TicklistHandlers.findOneTick);
 
 router.post(
   '/',
   validateRequest({
-    body: User,
+    body: Ticklist,
   }),
-  UsersHandlers.CreateUser);
+  TicklistHandlers.CreateTick);
 
 router.put(
   '/:id',
   validateRequest({
     params: ParamsWithId,
-    body: User,
+    body: Ticklist,
   }),
-  UsersHandlers.UpdateUser);
+  TicklistHandlers.UpdateTick);
 
 router.delete(
   '/:id',
   validateRequest({
     params: ParamsWithId,
   }),
-  UsersHandlers.DeleteUser);
+  TicklistHandlers.DeleteTick);
 
 export default router;
